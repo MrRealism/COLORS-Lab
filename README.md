@@ -17,6 +17,8 @@ Setup Instructions:
 1. First install linux (any will do but i will assume you have ubuntu) in a spare computer or Vm
 2. install apache, mysql, and php
 3. remove the index.html file in /var/www/html and clone this repo into that same folder
-4. create a new database and add 2 tables that are users and colors
-5. Populate the new tables with colors and users
-6. enjoy!
+4. move everything out of the public folder into /var/www/html
+5. create a new database and add 2 tables that are users and colors
+6. Populate the new tables with colors and users
+7. create a home screen html file
+8. enjoy!
