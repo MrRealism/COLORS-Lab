@@ -14,7 +14,9 @@ Instructions:
 To access this app please visit http://courtofcamelot.com (access not guaranteed due to server outages)
 
 Assumptions: I assume that you know how to use the terminal and how to install packages in linux, i also assume you have access or will have access to a public domain name 
+
 Limitations: device will have to be able to run apache, mysql, and php as well as a linux distro as well as any dependencies they may need
+
 AI usage: No AI usage was used in this project / Assignment
 
 Setup Instructions:
