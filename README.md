@@ -2,7 +2,7 @@
 ___
 This COLORS Application allows a user to make an account and search for colors or add and search for custom colors
 
-This Web application uses ubuntu, apache, mysql, and php. There are also supporting files that are coded in html, css, and java
+This Web application uses ubuntu, apache, mysql, and php. There are also supporting files that are coded in html, css, and javascript
 
 Instructions:
 1. Please login with a registered username and password
