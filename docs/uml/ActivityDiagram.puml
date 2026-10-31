@@ -1,0 +1,41 @@
+@startuml
+skinparam shadowing false
+
+start
+:Open Application (index.html);
+:Enter Login Credentials;
+:Trigger doLogin();
+:Send POST Request to Login.php;
+
+if (API returns valid userId >= 1?) is (No) then
+  :Display "User/Password incorrect" Error;
+  stop
+else (Yes)
+  :Save User Info in Cookie (20 min expiry);
+  :Redirect to Dashboard (color.html);
+endif
+
+repeat :User Dashboard Session;
+  split
+    :Enter New Color;
+    :Trigger addColor();
+    :Send POST to AddColor.php;
+    :Display "Color has been added";
+  split again
+    :Enter Search Term;
+    :Trigger searchColor();
+    :Send POST to SearchColors.php;
+    :Parse JSON Results Array;
+    :Render Color List via HTML;
+  split again
+    :Click Logout;
+    :Trigger doLogout();
+    :Clear Session Cookie;
+    :Redirect to index.html;
+    detach
+  end split
+repeat while (Session Active & Cookie Valid?) is (Yes)
+-> Cookie Expired or Logged Out;
+stop
+
+@enduml
