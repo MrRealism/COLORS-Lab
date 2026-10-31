@@ -1,0 +1,70 @@
+@startuml
+skinparam shadowing false
+skinparam classAttributeIconSize 0
+
+class User {
+    +int ID
+    +String firstName
+    +String lastName
+    +String login
+    +String password
+}
+
+class Color {
+    +int ID
+    +int UserID
+    +String Name
+}
+
+class FrontendScript {
+    -String urlBase
+    -String extension
+    +int userId
+    +String firstName
+    +String lastName
+    +doLogin()
+    +saveCookie()
+    +readCookie()
+    +doLogout()
+    +addColor()
+    +searchColor()
+}
+
+class LoginAPI {
+    +getRequestInfo()
+    +sendResultInfoAsJson(obj)
+    +returnWithError(err)
+    +returnWithInfo(firstName, lastName, id)
+}
+
+class AddColorAPI {
+    +getRequestInfo()
+    +sendResultInfoAsJson(obj)
+    +returnWithError(err)
+}
+
+class SearchColorsAPI {
+    +getRequestInfo()
+    +sendResultInfoAsJson(obj)
+    +returnWithError(err)
+    +returnWithInfo(searchResults)
+}
+
+class DatabaseConnection {
+    +String host
+    +String username
+    +String password
+    +String dbName
+    +mysqli conn
+}
+
+' Relationships
+User "1" --> "*" Color : owns >
+FrontendScript ..> LoginAPI : HTTP POST / Login.php
+FrontendScript ..> AddColorAPI : HTTP POST / AddColor.php
+FrontendScript ..> SearchColorsAPI : HTTP POST / SearchColors.php
+LoginAPI --> DatabaseConnection : queries Users
+AddColorAPI --> DatabaseConnection : queries Colors
+SearchColorsAPI --> DatabaseConnection : queries Colors
+
+@enduml
