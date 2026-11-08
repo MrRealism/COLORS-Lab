@@ -1,0 +1,25 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "auto-linting" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js for Linting
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Run JavaScript Linter
+      run: |
+        npm install eslint --no-save
+        npx eslint . --ext .js || true
