@@ -1,4 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
-  "ignoreFiles": ["node_modules/**", "**/*.min.css"]
+  "ignoreFiles": ["node_modules/**", "**/*.min.css"],
+  "rules": {
+    "selector-id-pattern": null
+  }
 }

@@ -11,6 +11,17 @@ module.exports = [
   },
   js.configs.recommended,
   {
+    files: ["eslint.config.cjs", "eslint.config.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "commonjs",
+      globals: {
+        require: "readonly",
+        module: "readonly"
+      }
+    }
+  },
+  {
     files: ["public/js/**/*.js"],
     languageOptions: {
       ecmaVersion: "latest",
@@ -18,10 +29,15 @@ module.exports = [
       globals: {
         window: "readonly",
         document: "readonly",
+        XMLHttpRequest: "readonly",
         fetch: "readonly",
         console: "readonly",
         hex_md5: "readonly"
       }
+    },
+    rules: {
+      // Functions in code.js are invoked from HTML attributes (e.g., onclick/onload)
+      "no-unused-vars": ["error", { vars: "local", args: "after-used" }]
     }
   },
   {
@@ -30,6 +46,10 @@ module.exports = [
       ecmaVersion: "latest",
       sourceType: "commonjs",
       globals: {
+        __dirname: "readonly",
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
         describe: "readonly",
         test: "readonly",
         expect: "readonly",
