@@ -148,7 +148,7 @@ describe("code.js front-end unit tests", () => {
       "Color(s) has been retrieved"
     );
     expect(document.getElementsByTagName("p")[0].innerHTML).toBe(
-      "Sky Blue<br>\r\nMidnight Blue"
+      "Sky Blue<br>\nMidnight Blue"
     );
   });
 });
