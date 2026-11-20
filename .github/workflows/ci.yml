@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: COP4331
+          MYSQL_USER: TheBeast
+          MYSQL_PASSWORD: WeLoveCOP4331
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u TheBeast -pWeLoveCOP4331"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run HTML, CSS, and JS linters
+        run: npm run lint
+
+      - name: Set up PHP with mysqli
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mysqli
+
+      - name: Seed test Colors table
+        run: |
+          mysql -h 127.0.0.1 -u TheBeast -pWeLoveCOP4331 COP4331 <<'EOF'
+          CREATE TABLE IF NOT EXISTS Colors (
+            ID INT NOT NULL AUTO_INCREMENT,
+            Name VARCHAR(50) NOT NULL,
+            UserID INT NOT NULL,
+            DateCreated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (ID)
+          );
+          INSERT INTO Colors (Name, UserID) VALUES ('Crimson', 1), ('Cobalt', 1);
+          EOF
+
+      - name: Start PHP server and run Jest tests
+        env:
+          API_BASE_URL: "http://127.0.0.1:8080/api"
+        run: |
+          php -S 127.0.0.1:8080 -t . >/tmp/php-server.log 2>&1 &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID 2>/dev/null" EXIT
+
+          for i in $(seq 1 30); do
+            if curl -s -o /dev/null http://127.0.0.1:8080/public/index.html; then
+              break
+            fi
+            sleep 0.5
+          done
+
+          npx jest
